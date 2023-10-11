@@ -1,25 +1,35 @@
-import { useQuery } from "react-query";
-import { LOCATION_QUERY_KEY } from "../consts/locationQueryKey";
-import { useEffect, useState } from "react";
-import { getCurrentWeather, getLocation } from "../api/weather.api";
+import styled from "styled-components";
+import CurrentCityWeather from "./components/currentCityWeather";
 
 const HomePage = () => {
-  // const KORcode = LOCATION_QUERY_KEY.KOR.ISOcode;
-  const KOR = LOCATION_QUERY_KEY.KOR;
-  // console.log(KOR);
-
-  const CHI = LOCATION_QUERY_KEY.US_CHI;
-  // console.log(CHI);
-
-  useEffect(() => {
-    getLocation();
-  });
-
   return (
-    <>
-      <h2>weather checker</h2>
-      HomePage
-    </>
+    <Wrapper>
+      <BackgroundImage>
+        <CurrentCityWeather />
+      </BackgroundImage>
+    </Wrapper>
   );
 };
+
 export default HomePage;
+
+const Wrapper = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  text-align: center;
+`;
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://assets.bonappetit.com/photos/5a3c31055468684549cf963e/16:9/w_2800,h_1575,c_limit/healthyish-fgfp-coldclimatetips-getty.jpg");
+  // background: url("../../public/images/seasonalBG/winter.jpeg");
+  overflow: hidden;
+`;

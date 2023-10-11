@@ -1,24 +1,13 @@
-import { axiosInstance } from "./core";
+import axios from "axios";
 
-export const getLocation = () => {
-  navigator.geolocation.getCurrentPosition((position) => {
-    // let lat = position.coords.latitude;
-    // let lon = position.coords.longitude;
-    let lat = 44.34;
-    let lon = 10.99;
-    getCurrentWeather(lat, lon);
-  });
-};
+/* 
+const axiosInstance = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_URL,
+  app_key: process.env.REACT_APP_API_KEY,
+  withCredentials: true,
+});
 
-export const getForecast = async () => {
-  const response = await axiosInstance.get("data/2.5/forecast", {
-    params: {},
-  });
-  return response.data;
-};
-
-// direct GeoCode(location) - Coordinates by location name, only USA
-export const getDirectGeoCode = async (cityName) => {
+export const getCurrentWeather = async (cityName) => {
   const response = await axiosInstance.get("data/2.5/weather", {
     params: {
       cityName,
@@ -26,14 +15,4 @@ export const getDirectGeoCode = async (cityName) => {
   });
   return response.data;
 };
-
-export const getCurrentWeather = async (lat, lon) => {
-  const response = await axiosInstance.get("data/2.5/weather", {
-    params: {
-      lat,
-      lon,
-    },
-  });
-  console.log("getCurrentWeather: ", response.data);
-  return response.data;
-};
+ */
