@@ -2,24 +2,34 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 const CurrentCityWeather = () => {
-  const [data, setData] = useState({});
+  const AppId = "05f85b9458c3257c0a7e584a9f2d5589";
 
-  const [cityName, setCityName] = useState("");
+  const [data, setData] = useState({});
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [cityName, setCityName] = useState("Rome");
   const [inputValue, setInputValue] = useState();
 
   useEffect(() => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=189271b827844bff7388350c44848615`
-    )
+    const response = fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${AppId}&units=metric`
+    );
+    return response
       .then((res) => {
         if (res.status === 200) {
+          isError && setIsError(false);
           return res.json();
         } else {
-          throw new Error("Oops! Something went Wrong!");
+          throw new Error("Oops! Something went wrong");
         }
       })
-      .then((data) => setData(data));
-  }, [cityName]);
+      .then((data) => {
+        setData(data);
+      })
+      .catch(() => setIsError(true))
+      .finally(() => setIsLoading(false));
+  }, [cityName, isError]);
 
   const searchCityName = (e) => {
     if (e.key === "Enter") {
@@ -36,33 +46,49 @@ const CurrentCityWeather = () => {
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={searchCityName}
         placeholder="search location"
+        error={isError}
       />
       <Container>
-        <WeatherInfoBox>
-          <CityName>{data.name}</CityName>
-          <Weather>
-            <Icon
-              /* src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} */
-              alt="weatherIcon"
-            />
-            {/* <Text>{data.weather[0].main}</Text> */}
-          </Weather>
-          {/* <Temperature>{data.main.temp.toFixed()} °C</Temperature> */}
-        </WeatherInfoBox>
-        <DetailWeather>
-          <Box>
-            <p>Humidity</p>
-            {/* <h2>{data.main.humidity.toFixed()}%</h2> */}
-          </Box>
-          <Box>
-            <p>Wind</p>
-            {/* <h2>{data.wind.speed.toFixed()} km/h</h2> */}
-          </Box>
-          <Box>
-            <p>Feels Like</p>
-            {/* <h2>{data.main.feels_like.toFixed()} °C</h2> */}
-          </Box>
-        </DetailWeather>
+        {isLoading ? (
+          <>
+            <WeatherInfoBox>
+              <CityName>{data.name}</CityName>
+              <Weather>
+                <Icon
+                  src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                  alt="weatherIcon"
+                />
+                {<Text>{data.weather[0].main}</Text>}
+              </Weather>
+              <Temperature>{data.main.temp.toFixed()} °C</Temperature>
+            </WeatherInfoBox>
+            <DetailWeather>
+              <Box>
+                <p>Humidity</p>
+                <h2>{data.main.humidity.toFixed()}%</h2>
+              </Box>
+              <Box>
+                <p>Wind</p>
+                <h2>{data.wind.speed.toFixed()} km/h</h2>
+              </Box>
+              <Box>
+                <p>Feels Like</p>
+                <h2>{data.main.feels_like.toFixed()} °C</h2>
+              </Box>
+            </DetailWeather>
+          </>
+        ) : (
+          <>
+            <WeatherInfoBox>
+              <CityName>???</CityName>
+              <Weather>
+                <Icon alt="weatherIcon" />
+                <Text>???</Text>
+              </Weather>
+              <Temperature>0 °C</Temperature>
+            </WeatherInfoBox>
+          </>
+        )}
       </Container>
     </Wrapper>
   );
@@ -102,13 +128,12 @@ const Container = styled.div`
 
 const WeatherInfoBox = styled.div``;
 
-const CityName = styled.h3``;
+const CityName = styled.h1``;
 
 const Weather = styled.div``;
 const Icon = styled.img``;
-const Text = styled.h4``;
-
-const Temperature = styled.h4``;
+const Text = styled.h3``;
+const Temperature = styled.h1``;
 
 const DetailWeather = styled.div`
   display: flex;
