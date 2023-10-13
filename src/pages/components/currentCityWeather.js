@@ -1,24 +1,18 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { getCurrentWeather } from "../../api/weather.api";
 
 const CurrentCityWeather = () => {
   const [data, setData] = useState({});
-
-  const [cityName, setCityName] = useState("");
-  const [inputValue, setInputValue] = useState();
+  const [cityName, setCityName] = useState("London");
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=189271b827844bff7388350c44848615`
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        } else {
-          throw new Error("Oops! Something went Wrong!");
-        }
-      })
-      .then((data) => setData(data));
+    (async () => {
+      const data = await getCurrentWeather(cityName);
+      setData(data);
+      console.log(data);
+    })();
   }, [cityName]);
 
   const searchCityName = (e) => {
@@ -42,25 +36,25 @@ const CurrentCityWeather = () => {
           <CityName>{data.name}</CityName>
           <Weather>
             <Icon
-              /* src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} */
+              src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
               alt="weatherIcon"
             />
-            {/* <Text>{data.weather[0].main}</Text> */}
+            <Text>{data.weather[0].main}</Text>
           </Weather>
-          {/* <Temperature>{data.main.temp.toFixed()} °C</Temperature> */}
+          <Temperature>{data.main.temp.toFixed()} °C</Temperature>
         </WeatherInfoBox>
         <DetailWeather>
           <Box>
             <p>Humidity</p>
-            {/* <h2>{data.main.humidity.toFixed()}%</h2> */}
+            <h2>{data.main.humidity.toFixed()}%</h2>
           </Box>
           <Box>
             <p>Wind</p>
-            {/* <h2>{data.wind.speed.toFixed()} km/h</h2> */}
+            <h2>{data.wind.speed.toFixed()} km/h</h2>
           </Box>
           <Box>
             <p>Feels Like</p>
-            {/* <h2>{data.main.feels_like.toFixed()} °C</h2> */}
+            <h2>{data.main.feels_like.toFixed()} °C</h2>
           </Box>
         </DetailWeather>
       </Container>
@@ -73,7 +67,7 @@ export default CurrentCityWeather;
 const Wrapper = styled.div`
   position: absolute;
   width: 50%;
-  top: 16%;
+  top: 8%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -83,6 +77,8 @@ const Wrapper = styled.div`
 
 const AppName = styled.h1`
   color: #fff;
+  letter-spacing: 1px;
+  font-size: 50px;
 `;
 
 const Input = styled.input`
@@ -95,20 +91,32 @@ const Input = styled.input`
 
 const Container = styled.div`
   width: 100%;
-  background-color: #ffffff80;
+  background-color: rgba(225, 225, 225, 0.4);
   border-radius: 10px;
   margin-top: 10%;
 `;
 
-const WeatherInfoBox = styled.div``;
+const WeatherInfoBox = styled.div`
+  color: #fff;
+`;
 
-const CityName = styled.h3``;
+const CityName = styled.h1``;
 
 const Weather = styled.div``;
-const Icon = styled.img``;
-const Text = styled.h4``;
 
-const Temperature = styled.h4``;
+const Icon = styled.img`
+  width: 24%;
+`;
+
+const Text = styled.h3`
+  color: #4a4a4a;
+  font-size: 22px;
+  margin-top: -4%;
+`;
+
+const Temperature = styled.h1`
+  color: rgba(0, 0, 0, 0.7);
+`;
 
 const DetailWeather = styled.div`
   display: flex;
@@ -120,12 +128,14 @@ const DetailWeather = styled.div`
 const Box = styled.div`
   width: 28%;
   margin: 5% 0;
-  background-color: #ffffff8d;
+  color: #fff;
+  border: 1px solid;
   border-radius: 10px;
   transition: all ease-in-out 0.5s;
   cursor: pointer;
 
   &:hover {
     background-color: #ececec80;
+    border: 1px solid #ececec80;
   }
 `;

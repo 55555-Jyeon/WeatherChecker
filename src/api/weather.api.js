@@ -1,18 +1,8 @@
 import axios from "axios";
 
-/* 
-const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL,
-  app_key: process.env.REACT_APP_API_KEY,
-  withCredentials: true,
-});
-
 export const getCurrentWeather = async (cityName) => {
-  const response = await axiosInstance.get("data/2.5/weather", {
-    params: {
-      cityName,
-    },
-  });
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=189271b827844bff7388350c44848615&units=metric`
+  );
   return response.data;
 };
- */
