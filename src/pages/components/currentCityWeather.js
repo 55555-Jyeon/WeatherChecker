@@ -93,7 +93,7 @@ const Container = styled.div`
   width: 100%;
   background-color: rgba(225, 225, 225, 0.4);
   border-radius: 10px;
-  margin-top: 10%;
+  margin-top: 2%;
 `;
 
 const WeatherInfoBox = styled.div`
@@ -109,14 +109,11 @@ const Icon = styled.img`
 `;
 
 const Text = styled.h3`
-  color: #4a4a4a;
   font-size: 22px;
   margin-top: -4%;
 `;
 
-const Temperature = styled.h1`
-  color: rgba(0, 0, 0, 0.7);
-`;
+const Temperature = styled.h1``;
 
 const DetailWeather = styled.div`
   display: flex;
@@ -133,6 +130,10 @@ const Box = styled.div`
   border-radius: 10px;
   transition: all ease-in-out 0.5s;
   cursor: pointer;
+
+  & > p {
+    color: rgba(0, 0, 0, 0.6);
+  }
 
   &:hover {
     background-color: #ececec80;

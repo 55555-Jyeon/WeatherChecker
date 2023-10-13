@@ -27,9 +27,9 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: 130%;
   background-repeat: no-repeat;
+  background-position: top 0% left 0%;
   background-image: url("https://assets.bonappetit.com/photos/5a3c31055468684549cf963e/16:9/w_2800,h_1575,c_limit/healthyish-fgfp-coldclimatetips-getty.jpg");
-  // background: url("../../public/images/seasonalBG/winter.jpeg");
   overflow: hidden;
 `;
